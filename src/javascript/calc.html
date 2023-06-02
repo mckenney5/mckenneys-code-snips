@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>McKenney's TEMS Calc</title>
+</head>
+<script>	
+let med_list = [];
+var patient_weight_kg = 100;
+
+function add_meds(){
+	try {
+		let json = JSON.parse(document.getElementById('EM').value);
+		med_list.pop(); //deletes the old list
+		med_list.push(json); //appends the JSON file onto the list
+		calculate_meds();
+		console.log("Added meds.");
+	} catch(err) {
+		document.getElementById('meds').innerHTML = "<p style=\"background-color:Red;\">Error: " + err.message + "</br></p><p>If you want the default values, refresh the page</p>";
+	}
+}
+
+function generate_sheet(){
+	var result = "<p><h2> Results for a " + patient_weight_kg + "kg (" + document.getElementById('Weight').value + "lbs) patient:</h2></p><p><i>" + Date() + "</i></p>";
+	if(document.getElementById('EM').value == default_meds) result += "<p style=\"color:Red;\"><b>vvv DEFAULT SETTTINGS FROM PA ALS 2020 PROTOCOLS vvv</b></p>";
+	result += "<p><h3>Medications:</h3></p>";
+	for(var l = 0; l < med_list.length; l++){
+		for(var i = 0; i < med_list[l].length; i++){
+			let color = "<p>";
+			let med = med_list[l][i];
+			let dose = 0.0;
+			if(med.weight_based){
+				dose = med.dose * patient_weight_kg;
+				if(dose > med.max_dose && med.max_dose > 0) dose = med.max_dose;
+			} else {
+				dose = med.dose
+			}
+		
+			if(i%2){
+				color = "<p style=\"background-color:Gray;\">";
+			} else {
+				color = "<p>";
+			}
+			result += color + "<u>" + med.name + ":</u> <b>" + dose + med.unit + "</b> " + med.route + ". " + med.extra + "</p>";
+		}
+	}
+	return result;
+}
+
+function calculate_meds(){
+	patient_weight_kg = Math.round((document.getElementById('Weight').value / 2.2) * 10) / 10;
+	document.getElementById("meds").innerHTML = generate_sheet();
+}
+
+function save_meds(){
+	//saves med_list as local storage
+	if(document.getElementById('EM').value == "") return;
+	console.log("med_list=" + document.getElementById('EM').value);
+	localStorage.setItem("med_list", document.getElementById('EM').value);
+	console.log(localStorage);
+}
+
+function load_meds(){
+	//loads med_list from storage
+	document.getElementById("EM").value = localStorage.getItem("med_list");
+}
+
+function clear_meds(){
+	//clears the text box
+	document.getElementById("EM").value = "";
+}
+
+function delete_meds(){
+	//deletes the storage
+	if(confirm("Click Ok to delete locally saved medications")){
+		med_list = "";
+		localStorage.setItem("med_list", "");
+		document.getElementById("EM").value = "";
+	}
+}
+
+function print_meds(){
+	//turn on white
+	document.body.style.backgroundColor = "white";
+	document.body.style.color = "black";
+	print();
+	document.body.style.backgroundColor = "black";
+	document.body.style.color = "white";
+}
+
+function lock_all(){
+	document.getElementById('AddMeds').disabled = !(document.getElementById('AddMeds').disabled);
+	document.getElementById('SaveMeds').disabled = !(document.getElementById('SaveMeds').disabled);
+	document.getElementById('LoadMeds').disabled = !(document.getElementById('LoadMeds').disabled);
+	document.getElementById('ClearMeds').disabled = !(document.getElementById('ClearMeds').disabled);
+	document.getElementById('DelMeds').disabled = !(document.getElementById('DelMeds').disabled);
+	document.getElementById('PrintMeds').disabled = !(document.getElementById('PrintMeds').disabled);
+	document.getElementById('Calculate').disabled = !(document.getElementById('Calculate').disabled);
+	document.getElementById('Weight').disabled = !(document.getElementById('Weight').disabled);
+	document.getElementById('EM').disabled = !(document.getElementById('EM').disabled);
+}
+
+</script>
+
+<body style="background-color:black; color:white;">
+<h1 id="Name" style="text-align: center;">McKenney's TEMS Calc</h1>
+<div style="text-align: center;">
+<p>Patient Weight in Lbs: 
+<input id="Weight" name="Weight" value="220" id="Weight" min="1" max="220" autocomplete="on" type="number"> <button id="Calculate" name="Calculate" value="Calculate"
+autofocus="autofocus" type="button" onclick="calculate_meds()">Calculate</button></p>
+<p>Medication List (JSON):<input name="EM" value="" autocomplete="on" type="text" id="EM"></p>
+<p> 
+<button id="AddMeds" name="AddMeds" value="Add Medications" type="button" onclick="add_meds()">Add</button>  
+<button id="SaveMeds" name="SaveMeds" value="Save Medications" type="button" onclick="save_meds()">Save</button>  
+<button id="LoadMeds" name="LoadMeds" value="Load Medications" type="button" onclick="load_meds()">Load</button>  
+<button id="ClearMeds" name="ClearMeds" value="Clear Medications" type="button" onclick="clear_meds()">Clear</button>
+<button id="DelMeds" name="DelMeds" value="Del Medications" type="button" onclick="delete_meds()">Delete Saved Meds</button>
+<button id="PrintMeds" name="PrintMeds" value="Print Medications" type="button" onclick="print_meds()">Print Meds</button>
+<button id="Lock" name="Lock" value="Lock" type="button" onclick="lock_all()">Lock / Unlock Controls</button>
+
+</p>
+</div>
+<p> </p>
+<hr style="color: white; margin-left: auto; margin-right: auto;">
+<p><output id="meds" name="meds"></output></p>
+<p><br>
+</p>
+</body>
+
+<script>
+var default_meds = '[{"name":"Ativan","dose":0.1,"max_dose":2,"weight_based":true,"unit":"mg","route":"IV","extra":"Slow IV push."},{"name":"Dopamine (IV)","dose":5,"max_dose":0,"weight_based":true,"unit":"mcg/min","route":"IV","extra":"Inital dose. Do not exceed 20mcg/kg/min"},{"name":"Epi (IM)","dose":0.01,"max_dose":0.3,"weight_based":true,"unit":"mg","route":"IM","extra":"1mg/1mL concentration."},{"name":"Epi (IV Push Dose)","dose":10,"max_dose":0,"weight_based":false,"unit":"mcg","route":"IV","extra":"1mg/100mL concentration. Initaldose."},{"name":"Etomidate","dose":0.3,"max_dose":30,"weight_based":true,"unit":"mg","route":"IV/IM/IN","extra":"Slow IV push."},{"name":"Fentanyl","dose":1,"max_dose":100,"weight_based":true,"unit":"mcg","route":"IV/IM/IN","extra":"Slow IV push. 100mcg per dose."},{"name":"Ketamine(pain)","dose":0.3,"max_dose":30,"weight_based":true,"unit":"mg","route":"IV","extra":"in a 100mL bag over 10 minutes."},{"name":"Ketamine (sedation IV)","dose":2,"max_dose":0,"weight_based":true,"unit":"mg","route":"IV","extra":""},{"name":"Ketamine (sedation IM)","dose":4,"max_dose":0,"weight_based":true,"unit":"mg","route":"IM","extra":""},{"name":"Morphine","dose":0.1,"max_dose":10,"weight_based":true,"unit":"mg","route":"IV/IM","extra":"Slow IV push. 10mg per dose."},{"name":"Torodal(IV)","dose":0.5,"max_dose":15,"weight_based":true,"unit":"mg","route":"IV","extra":""},{"name":"Torodal(IM)","dose":0.5,"max_dose":30,"weight_based":true,"unit":"mg","route":"IM","extra":""},{"name":"Versed","dose":0.05,"max_dose":5,"weight_based":true,"unit":"mg","route":"IV","extra":"Slow IV push."}]';
+document.getElementById("EM").value = default_meds;
+console.log(default_meds);
+add_meds();
+</script>
+
+</html>

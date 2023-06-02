@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Med List Creator</title>
+    <script>
+			let meds= [ ];
+			let full_meds = " ";
+      let new_list = " ";
+	    let med_list = [];
+
+	function gen(){
+   let results = new_list;
+	results += "{\"name\":\"" + document.getElementById('MedName').value + "\",\"dose\":" + document.getElementById('MedDose').value +
+	",\"max_dose\":" + document.getElementById('MedMaxDose').value + ",\"weight_based\":" + document.getElementById('WeightBased').value + 
+	",\"unit\":\"" + document.getElementById('MedUnit').value + "\",\"route\":\"" + document.getElementById('MedRoute').value +
+	"\",\"extra\":\"" + document.getElementById('MedExtra').value + "\"},";
+	meds += results;
+	full_meds = "<code>[ ";
+	for(let i = 0; i < meds.length; i++){
+		full_meds += meds[i];
+	}
+		full_meds = full_meds.substring(0, full_meds.length - 1); //remove the last ,
+		full_meds += " ]";
+   return full_meds
+  }
+    
+    function generate_list(){
+      document.getElementById("meds").innerHTML = gen();
+    }
+    function clear_list(){
+						console.log("Cleared");
+			document.getElementById("meds").innerHTML = "";
+			full_meds = "";
+			new_list = "";
+			meds = "";
+		}
+    </script>
+  </head>
+  <body>
+    <h1 style="text-align: center;">McKenney's TEMS Calc</h1>
+    <h3 style="text-align: center;">Med List Generator</h3>
+    <div style="text-align: center;">
+      <p style="margin-left: 80px; text-align: center;">Medication Name: <input
+          name="MedName" value="Enter Name Here" autocomplete="on" type="text" id="MedName"></p>
+      <div style="margin-left: 80px; text-align: center;"> </div>
+      <p style="margin-left: 80px; text-align: center;">Medication Dose: <input
+          name="MedDose" value="0" id="MedDose" min="0" autocomplete="on" type="number"></p>
+      <div style="margin-left: 80px; text-align: center;"> </div>
+      <p style="margin-left: 80px; text-align: center;">MAX Dose: (Set to 0 if there is not any) <input
+          name="MedMaxDose" value="0" id="MedMaxDose" min="0" autocomplete="on" type="number"></p>
+      <div style="margin-left: 80px; text-align: center;"> </div>
+      <p style="margin-left: 80px; text-align: center;">Weight Based:
+        <select id="WeightBased">
+          <option value="true">True</option>
+          <option value="false">False</option>
+          &nbsp;
+        </select>
+      </p>
+      <p style="margin-left: 80px; text-align: center;">Unit: <input name="MedUnit"
+          value="mg" size="3" autocomplete="on" type="text" id="MedUnit"></p>
+      <p style="margin-left: 80px; text-align: center;">Route: <input name="MedRoute"
+          size="3" autocomplete="on" type="text" id="MedRoute"></p>
+      <p style="margin-left: 80px; text-align: center;">Extra Info: <input name="MedExtra"
+          autocomplete="on" type="text" id="MedExtra"><br>
+      </p>
+      <p style="text-align: center;"><button name="Calculate" value="Calculate"
+          autofocus="autofocus" type="button" onclick="generate_list()">Generate</button>
+          <button name="Clear" value="Clear" type="button" onclick="clear_list()">Clear</button></p>
+    </div>
+    <p> </p>
+    <hr style="color: white; margin-left: auto; margin-right: auto;">
+    <p><output id="meds" name="meds"></output></p>
+    <p><br>
+    </p>
+  </body>
+</html>

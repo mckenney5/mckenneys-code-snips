@@ -1,0 +1,106 @@
+[
+  {
+	"name": "Ativan",
+	"dose": 0.1,
+	"max_dose": 2,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IV",
+	"extra": "Slow IV push."
+}, {
+	"name": "Dopamine (IV)",
+	"dose": 5,
+	"max_dose": 0,
+	"weight_based": true,
+	"unit": "mcg/min",
+	"route": "IV",
+	"extra": "Inital dose. Do not exceed 20mcg/kg/min"
+}, {
+	"name": "Epi (IM)",
+	"dose": 0.01,
+	"max_dose": 0.3,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IM",
+	"extra": "1mg/1mL concentration"
+}, {
+	"name": "Epi (IV Push Dose)",
+	"dose": 10,
+	"max_dose": 0,
+	"weight_based": false,
+	"unit": "mcg",
+	"route": "IV",
+	"extra": "1mg/100mL concentration. Inital dose."
+}, {
+	"name": "Etomidate",
+	"dose": 0.3,
+	"max_dose": 30,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IV/IM/IN",
+	"extra": "Slow IV push."
+}, {
+	"name": "Fentanyl",
+	"dose": 1,
+	"max_dose": 100,
+	"weight_based": true,
+	"unit": "mcg",
+	"route": "IV/IM/IN",
+	"extra": "Slow IV push. 100mcg per dose"
+}, {
+	"name": "Ketamine (pain)",
+	"dose": 0.3,
+	"max_dose": 30,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IV",
+	"extra": "in a 100mL bag over 10 minutes"
+}, {
+	"name": "Ketamine (sedation IV)",
+	"dose": 2,
+	"max_dose": 0,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IV",
+	"extra": ""
+}, {
+	"name": "Ketamine (sedation IM)",
+	"dose": 4,
+	"max_dose": 0,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IM",
+	"extra": ""
+}, {
+	"name": "Morphine",
+	"dose": 0.1,
+	"max_dose": 10,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IV/IM",
+	"extra": "Slow IV push. 10mg per dose"
+}, {
+	"name": "Torodal (IV)",
+	"dose": 0.5,
+	"max_dose": 15,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IV",
+	"extra": ""
+}, {
+	"name": "Torodal (IM)",
+	"dose": 0.5,
+	"max_dose": 30,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IM",
+	"extra": ""
+}, {
+	"name": "Versed",
+	"dose": 0.05,
+	"max_dose": 5,
+	"weight_based": true,
+	"unit": "mg",
+	"route": "IV",
+	"extra": "Slow IV push."
+} ]
