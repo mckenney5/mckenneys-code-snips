@@ -44,8 +44,9 @@ vector<string> tokenize(string input){
 	return tokens;
 }
 
+/*
 int main(int argc, char *argv[]){
-	//treats args as either a textfile or string
+	//testing script - treats args as either a textfile or string
 
 	//testing script:
 	size_t total_tokens = 0;	
@@ -80,5 +81,5 @@ int main(int argc, char *argv[]){
 	cout << "Total Tokens: " << total_tokens << endl;
 	return 0;
 }
-
+*/
 
