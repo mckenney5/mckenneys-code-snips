@@ -18,26 +18,25 @@ string read_file(const string file_name){
 		getline(text_file, entire_file, '\0');
 	return entire_file;
 }
-
-vector<string> tokenize(string input){
+vector<string> tokenize(string input, string delim = " \t\r\n"){
 	vector<string> tokens;
 	string word = "";
-	char letter = '\0';
+	bool found = false;
 
-	for(size_t i = 0; (letter = input[i]) != '\0'; i++){
-		//split string by whitespace
-		switch (letter){
-		case '\r': //fall through
-		case '\t': //fall through
-		case '\n': //fall through
-		case ' ':
-			if(word != "") tokens.push_back(word);
-			word = "";
-			break;
-		default:
-			word.push_back(letter);
-			break;
+	for(size_t i = 0; input[i] != '\0'; i++){
+		//split string by delim
+		for(size_t l = 0; delim[l] != '\0'; l++){
+			if(input[i] == delim[l]){
+				if(word != "") tokens.push_back(word);
+				word = "";
+				found = true;
+				break;
+			}
 		}
+		if(!found)
+			word.push_back(input[i]);
+		else 
+			found = false;
 	}
 	if(word != "") tokens.push_back(word); //adds the last word
 	tokens.shrink_to_fit(); //shrink vector since we should not need to add more data
