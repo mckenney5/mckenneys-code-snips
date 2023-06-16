@@ -1,5 +1,5 @@
 /* Hello World for aarch64 (arm64) using Linux System Calls 
-* It is a good idea to use capital X fir registers so you
+* It is a good idea to use capital X for registers so you
 * do not confuse it with hex.
 *
 * compile with: as <source> -o name && ld name -o name.out
